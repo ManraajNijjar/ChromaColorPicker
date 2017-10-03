@@ -148,24 +148,35 @@ open class ChromaColorPicker: UIControl {
         var brightness: CGFloat = 0.0
         var hue: CGFloat = 0.0
         var alpha: CGFloat = 0.0
-        
         color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
         let newColor = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
         
         /* Set the slider value for the new color and update addButton */
-        shadeSlider.primaryColor = UIColor(hue: hue, saturation: 1, brightness: 1, alpha: 1) //Set a color recognzied on the color wheel
+        //shadeSlider.primaryColor = UIColor(hue: hue, saturation: 1, brightness: 1, alpha: 1) //Set a color recognzied on the color wheel
+        shadeSlider.primaryColor = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1)
         
         /* Update the angle and currentColor */
         currentAngle = angleForColor(newColor)
         currentColor = newColor
         
         if brightness < 1.0 { //currentValue is on the left side of the slider
-            shadeSlider.currentValue = brightness-1
+            print("Bri")
+            if saturation == 1 {
+                shadeSlider.currentValue = brightness-1
+            } else {
+                shadeSlider.currentValue = -((brightness - 0.5) * saturation)
+            }
         }else{
-            shadeSlider.currentValue = -(saturation-1)
+            if brightness == 1 {
+                shadeSlider.currentValue = -(saturation-1)
+            } else {
+                shadeSlider.currentValue = -((brightness - 0.5) * saturation)
+            }
         }
+        
         shadeSlider.updateHandleLocation() //update the handle location now that the value is set
-        addButton.color = shadeSlider.currentColor
+        
+        addButton.color = newColor
         
         /* Will layout based on new angle */
         self.layoutHandle()
