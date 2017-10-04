@@ -152,27 +152,29 @@ open class ChromaColorPicker: UIControl {
         let newColor = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
         
         /* Set the slider value for the new color and update addButton */
-        //shadeSlider.primaryColor = UIColor(hue: hue, saturation: 1, brightness: 1, alpha: 1) //Set a color recognzied on the color wheel
-        shadeSlider.primaryColor = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1)
+        shadeSlider.primaryColor = UIColor(hue: hue, saturation: 1, brightness: 1, alpha: 1) //Set a color recognzied on the color wheel
+        //shadeSlider.primaryColor = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1)
         
         /* Update the angle and currentColor */
         currentAngle = angleForColor(newColor)
         currentColor = newColor
         
         if brightness < 1.0 { //currentValue is on the left side of the slider
-            print("Bri")
+            print(brightness)
             if saturation == 1 {
                 shadeSlider.currentValue = brightness-1
             } else {
                 shadeSlider.currentValue = -((brightness - 0.5) * saturation)
             }
         }else{
+            print(saturation)
             if brightness == 1 {
                 shadeSlider.currentValue = -(saturation-1)
             } else {
                 shadeSlider.currentValue = -((brightness - 0.5) * saturation)
             }
         }
+        //print(shadeSlider.currentValue)
         
         shadeSlider.updateHandleLocation() //update the handle location now that the value is set
         
